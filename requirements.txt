@@ -1,0 +1,8 @@
+numpy
+pandas
+plotnine
+pytest
+requests
+scikit-learn
+scikit-surprise
+tqdm
