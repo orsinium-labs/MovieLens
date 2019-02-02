@@ -1,4 +1,5 @@
 import numpy
+from tqdm import tqdm
 
 
 class SlopeOneEstimator:
@@ -12,24 +13,21 @@ class SlopeOneEstimator:
         counts = numpy.zeros((movies_count, movies_count), numpy.int)
         deviation = numpy.zeros((movies_count, movies_count), numpy.double)
 
-        for user in dataset.users:
-            movies = dataset.get_movies(user=user)
-            for movie1 in movies:
-                for movie2 in movies:
-                    rating1 = dataset.get_rating(user=user, movie=movie1)
-                    rating2 = dataset.get_rating(user=user, movie=movie2)
-                    counts[movie1][movie2] += 1
-                    deviation[movie1][movie2] += rating1 - rating2
+        for user, group in tqdm(dataset.df.groupby('userId')):
+            for _i, row1 in group.iterrows():
+                for _i, row2 in group.iterrows():
+                    counts[row1['movieId']][row2['movieId']] += 1
+                    deviation[row1['movieId']][row2['movieId']] += row1['rating'] - row2['rating']
 
-        for movie1 in range(movies_count):
+        for movie1 in tqdm(range(movies_count)):
             deviation[movie1][movie1] = 0  # I like to movie movie
             for movie2 in range(movie1 + 1, movies_count):
                 deviation[movie1][movie2] /= counts[movie1][movie2]
                 deviation[movie2][movie1] = -deviation[movie1][movie2]
 
         means = numpy.zeros((len(dataset.users),))
-        for user in dataset.users:
-            means[user] = numpy.mean(dataset.get_ratings(user=user))
+        for user, group in dataset.df.groupby('userId'):
+            means[user] = group['rating'].mean()
 
         self._counts = counts
         self._deviation = deviation
