@@ -1,8 +1,8 @@
-from movielens import mae, rmse, RatingData, MovieData, preprocess, Prediction
-from movielens.estimators import GlobalMeanEstimator
+from movielens import mae, rmse, RatingData, MovieData, preprocess, Prediction, estimators
 
 ESTIMATORS = (
-    GlobalMeanEstimator(),
+    estimators.SlopeOneEstimator(),
+    estimators.GlobalMeanEstimator(),
 )
 
 

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Iterable
 import numpy
 
 from .base import BaseData
@@ -15,9 +15,17 @@ class RatingData(BaseData):
     def movies(self) -> numpy.ndarray:
         return numpy.sort(self.df['movieId'].unique())
 
+    def get_movies(self, user: int) -> Iterable[int]:
+        filtered = self.df[self.df['userId'] == user]
+        return filtered['movieId']
+
+    def get_ratings(self, user: int) -> Iterable[int]:
+        filtered = self.df[self.df['userId'] == user]
+        return filtered['rating']
+
     def get_rating(self, user: int, movie: int) -> Optional[int]:
         filtered = self.df[self.df['userId'] == user][self.df['movieId'] == movie]
-        if filtered.empty():
+        if filtered.empty:
             return None
         return next(iter(filtered['rating']))
 
