@@ -1,7 +1,4 @@
-from movielens.accuracy import mae, rmse
-from movielens.datasets import RatingData, MovieData
-from movielens.preprocessors import preprocess
-from movielens.prediction import Prediction
+from movielens import mae, rmse, RatingData, MovieData, preprocess, Prediction
 from movielens.estimators import GlobalMeanEstimator
 
 ESTIMATORS = (
