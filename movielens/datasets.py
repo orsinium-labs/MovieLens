@@ -2,51 +2,58 @@ from pathlib import Path
 import requests
 from tqdm import tqdm_notebook
 from zipfile import ZipFile
-from typing import Optional
+from typing import Optional, List
 import pandas
 import numpy
+import re
 from shutil import rmtree
 
 
+REX_YEAR = re.compile(r'.+\((\d+)\)')
 URL_SMALL = 'http://files.grouplens.org/datasets/movielens/ml-latest-small.zip'
 URL_FULL = 'http://files.grouplens.org/datasets/movielens/ml-20m.zip'
 
 
-def download_data(*, full=False):
-    if not Path('data').exists():
-        # download archive
-        if not Path('data.zip').exists():
-            url = URL_FULL if full else URL_SMALL
-            response = requests.get(url, stream=True)
-            with Path('data.zip').open('wb') as stream:
-                size = int(response.headers.get('content-length')) / 1024 + 1
-                for chunk in tqdm_notebook(response.iter_content(chunk_size=1024), total=size):
-                    if chunk:
-                        stream.write(chunk)
-
-        # extract archive
-        with ZipFile('data.zip', 'r') as archive:
-            archive.extractall('data')
-        Path('data.zip').unlink()
-
-        # mv files from nested dir
-        for path in Path('data').glob('*/*.csv'):
-            path.rename(Path('data') / path.name)
-
-        # drop empty dir
-        for path in Path('data').iterdir():
-            if path.is_dir():
-                rmtree(str(path))
-
-
-class RatingData:
-    def __init__(self, df=None, *, full=False):
+class BaseData:
+    def __init__(self, df: Optional[pandas.DataFrame] = None, *, full: bool = False):
         if df is None:
-            download_data(full=full)
-            path = Path('data') / 'ratings.csv'
+            self.download_data(full=full)
+            path = Path('data') / self._file_name
             df = pandas.read_csv(str(path))
-            df['rating'] = df['rating'].apply(lambda rating: int(rating * 2))
+            if 'rating' in df.columns:
+                df['rating'] = df['rating'].apply(lambda rating: int(rating * 2))
         self.df = df
+
+    @staticmethod
+    def download_data(*, full: bool = False) -> None:
+        if not Path('data').exists():
+            # download archive
+            if not Path('data.zip').exists():
+                url = URL_FULL if full else URL_SMALL
+                response = requests.get(url, stream=True)
+                with Path('data.zip').open('wb') as stream:
+                    size = int(response.headers.get('content-length')) / 1024 + 1
+                    for chunk in tqdm_notebook(response.iter_content(chunk_size=1024), total=size):
+                        if chunk:
+                            stream.write(chunk)
+
+            # extract archive
+            with ZipFile('data.zip', 'r') as archive:
+                archive.extractall('data')
+            Path('data.zip').unlink()
+
+            # mv files from nested dir
+            for path in Path('data').glob('*/*.csv'):
+                path.rename(Path('data') / path.name)
+
+            # drop empty dir
+            for path in Path('data').iterdir():
+                if path.is_dir():
+                    rmtree(str(path))
+
+
+class RatingData(BaseData):
+    _file_name = 'ratings.csv'
 
     @property
     def users(self) -> numpy.ndarray:
@@ -72,3 +79,40 @@ class RatingData:
             movie_index = numpy.where(movies == row['movieId'])
             matrix[user_index][movie_index] = row['rating']
         return matrix
+
+
+class MovieData(BaseData):
+    _file_name = 'movies.csv'
+
+    def __init__(self, df: Optional[pandas.DataFrame] = None, *, full: bool = False):
+        super().__init__(df=df, full=full)
+        self.df.set_index('movieId', inplace=True)
+        self.df['year'] = self.df['title'].apply(lambda title: next(iter(REX_YEAR.findall(title)), None))
+
+    @property
+    def movies(self) -> numpy.ndarray:
+        # already unique and sorted
+        return self.df.index
+
+    @property
+    def genres(self) -> List[str]:
+        result = set()
+        for line in self.df.genres:
+            result.update(line.split('|'))
+        return sorted(result)
+
+    def get_title(self, movie_id: int) -> str:
+        return self.df.loc[movie_id].title
+
+    def get_year(self, movie_id: int) -> int:
+        return int(self.df.loc[movie_id].year)
+
+    def get_genres(self, movie_id: int) -> List[str]:
+        return self.df.loc[movie_id].genres.split('|')
+
+    def get_genre(self, genre_name: str) -> List[int]:
+        result = []
+        for index, row in self.df.iterrows():
+            if genre_name in row.genres.split('|'):
+                result.append(index)
+        return result
