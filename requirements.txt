@@ -1,6 +1,7 @@
 numpy
 pandas
 plotnine
+plydata
 pytest
 requests
 scikit-learn
