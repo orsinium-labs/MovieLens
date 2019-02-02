@@ -6,13 +6,13 @@ from .datasets import RatingData, MovieData
 
 def _get_index(field, vector, source_id) -> Optional[int]:
     if field == 'userId':
-        return source_id - 1
+        return int(source_id) - 1
     places = numpy.where(vector == source_id)
     while not isinstance(places, (numpy.int64, int)):
         if len(places) == 0:
             return None
         places = places[0]
-    return places
+    return int(places)
 
 
 def preprocess(ratings: RatingData, movies: MovieData) -> None:

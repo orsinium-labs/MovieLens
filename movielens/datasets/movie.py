@@ -27,7 +27,13 @@ class MovieData(BaseData):
     @property
     def movies(self) -> numpy.ndarray:
         # already unique and sorted
+        if 'movieId' in self.df.columns:
+            return self.df['movieId']
         return self.df.index
+
+    @property
+    def years(self) -> List[int]:
+        return sorted(self.df['year'])
 
     @property
     def genres(self) -> List[str]:
