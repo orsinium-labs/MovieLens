@@ -2,7 +2,7 @@ from pathlib import Path
 import requests
 from tqdm import tqdm_notebook
 from zipfile import ZipFile
-from typing import Optional
+from typing import Optional, Tuple
 import pandas
 import re
 from shutil import rmtree
@@ -49,3 +49,12 @@ class BaseData:
             for path in Path('data').iterdir():
                 if path.is_dir():
                     rmtree(str(path))
+
+    def split(self, elements: Optional[int] = None,
+              ratio: Optional[float] = None) -> Tuple['BaseData', 'BaseData']:
+        if elements is None:
+            elements = int(len(self.df) * ratio)
+        test = self.df.sample(elements)
+        train = self.df.drop(index=test.index)
+        cls = type(self)
+        return cls(df=train), cls(df=test)
