@@ -2,6 +2,7 @@ package main
 
 import "C"
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/kniren/gota/dataframe"
@@ -11,7 +12,7 @@ import (
 
 // BuildSlopeOne builds deviation matrix for Slope One collaborative filtering algorithm
 //export BuildSlopeOne
-func BuildSlopeOne(users []int32, movies []int32, ratings []int8) (C.size_t, *C.float) {
+func BuildSlopeOne(users []int32, movies []int32, ratings []int32) (C.size_t, *C.float) {
 	userSet := make(map[int32]bool)
 	for _, user := range users {
 		userSet[user] = true
@@ -31,6 +32,8 @@ func BuildSlopeOne(users []int32, movies []int32, ratings []int8) (C.size_t, *C.
 
 	diffMatrix := mat.NewDense(moviesCount, moviesCount, nil)
 	freqMatrix := mat.NewDense(moviesCount, moviesCount, nil)
+	diffMatrix.Zero()
+	freqMatrix.Zero()
 	for user := range userSet {
 		fil := df.Filter(dataframe.F{
 			Colname:    "user",
@@ -74,16 +77,18 @@ func BuildSlopeOne(users []int32, movies []int32, ratings []int8) (C.size_t, *C.
 	}
 
 	// https://stackoverflow.com/questions/43330938/export-function-that-returns-array-of-doubles
-	p := C.malloc(C.size_t(moviesCount) * C.size_t(unsafe.Sizeof(C.float(0))))
-	cVector := (*[1<<30 - 1]C.float)(p)[:moviesCount:moviesCount]
+	vector := diffMatrix.RawMatrix().Data
+	size := len(vector)
+	p := C.malloc(C.size_t(size) * C.size_t(unsafe.Sizeof(C.float(0))))
+	cVector := (*[1<<30 - 1]C.float)(p)[:size:size]
 
 	// fill array
-	vector := diffMatrix.RawMatrix().Data
 	for i, value := range vector {
 		cVector[i] = C.float(value)
 	}
+	fmt.Println("done!")
 
-	return C.size_t(moviesCount), (*C.float)(p)
+	return C.size_t(size), (*C.float)(p)
 }
 
 func main() {}
