@@ -3,14 +3,15 @@ from tqdm import tqdm
 from ..datasets import RatingData, MovieData
 from collections import Counter
 from math import isclose
+from .base import BaseEstimator
 
 
-class SimilarUsersEstimator:
+class SimilarUsersEstimator(BaseEstimator):
     """Returns mean movie rating among similar users.
 
     It's weighted mean of movie ratings where weight is similarity of two users.
     """
-    def fit(self, ratings: RatingData, movies: MovieData):
+    def fit(self, ratings: RatingData, movies: MovieData) -> None:
         counters = dict()
         for user, group in ratings.df.groupby('userId'):
             group = group[['movieId', 'rating']]

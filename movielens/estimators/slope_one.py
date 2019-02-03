@@ -1,9 +1,10 @@
 import numpy
 from tqdm import tqdm
 from ..datasets import RatingData, MovieData
+from .base import BaseEstimator
 
 
-class SlopeOneEstimator:
+class SlopeOneEstimator(BaseEstimator):
     """
     This realisation hasn't been tested because this is too slow.
     Instead of this I've made realisation on Go.
@@ -13,7 +14,7 @@ class SlopeOneEstimator:
     https://arxiv.org/pdf/cs/0702144.pdf
     https://github.com/NicolasHug/Surprise/blob/master/surprise/prediction_algorithms/slope_one.pyx
     """
-    def fit(self, ratings: RatingData, movies: MovieData):
+    def fit(self, ratings: RatingData, movies: MovieData) -> None:
         movies_count = len(ratings.movies)
         counts = numpy.zeros((movies_count, movies_count), numpy.int)
         deviation = numpy.zeros((movies_count, movies_count), numpy.double)

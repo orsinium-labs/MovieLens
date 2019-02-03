@@ -1,13 +1,14 @@
 import numpy
 from ..datasets import RatingData, MovieData
 from ..slope_one import build_slope_one
+from .base import BaseEstimator
 
 
-class SlopeOneGoEstimator:
+class SlopeOneGoEstimator(BaseEstimator):
     """
     https://github.com/ginuerzh/go-slope-one/blob/master/slope_one.go
     """
-    def fit(self, ratings: RatingData, movies: MovieData):
+    def fit(self, ratings: RatingData, movies: MovieData) -> None:
         self._diffs = build_slope_one(
             users=ratings.df['userId'],
             movies=ratings.df['movieId'],

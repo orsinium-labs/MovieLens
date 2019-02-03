@@ -1,9 +1,10 @@
 from tqdm import tqdm
 import numpy
 from ..datasets import RatingData, MovieData
+from .base import BaseEstimator
 
 
-class GroupMeanEstimator:
+class GroupMeanEstimator(BaseEstimator):
     """Returns mean rating for movie genre and year.
 
     It's helpful when we know nothing about user.
