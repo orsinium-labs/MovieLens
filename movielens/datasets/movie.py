@@ -25,11 +25,11 @@ class MovieData(BaseData):
         return None  # mypy requires it
 
     @property
-    def movies(self) -> numpy.ndarray:
+    def movies(self) -> List[int]:
         # already unique and sorted
         if 'movieId' in self.df.columns:
-            return self.df['movieId']
-        return self.df.index
+            return list(map(int, self.df['movieId']))
+        return list(map(int, self.df.index))
 
     @property
     def years(self) -> List[int]:

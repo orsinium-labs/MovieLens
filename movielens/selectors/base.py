@@ -1,12 +1,13 @@
 import abc
+from typing import List
 from ..datasets import RatingData, MovieData
 
 
-class BaseEstimator(abc.ABC):
+class BaseSelector(abc.ABC):
     @abc.abstractmethod
     def fit(self, ratings: RatingData, movies: MovieData) -> None:
         pass
 
     @abc.abstractmethod
-    def estimate(self, user: int, movie: int) -> float:
+    def select(self, movie: int) -> List[int]:
         pass

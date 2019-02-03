@@ -25,7 +25,9 @@ python3.7 compare.py
 
 ## Get recommendations
 
-For user:
+### For user
+
+Get datasets:
 
 ```python
 >>> from movielens import recommend, estimators, RatingData, MovieData, preprocess
@@ -33,10 +35,18 @@ For user:
 >>> movies = MovieData()
 >>> preprocess(ratings=ratings, movies=movies)
 >>> train, test = ratings.split(elements=100)
->>>
+```
+
+Train estimator:
+
+```python
 >>> estimator = estimators.GroupMeanEstimator()
 >>> estimator.fit(ratings=train, movies=movies)
->>>
+```
+
+Get recommendations:
+
+```python
 >>> recs = recommend.by_user(
 ...     user=0,
 ...     estimator=estimator,
@@ -45,6 +55,11 @@ For user:
 ... )
 >>> recs
 [48, 433, 666, 1646, 2327, 2745]
+```
+
+Get movies titles:
+
+```python
 >>> for rec in recs:
 ...     print(movies.get_title(rec))
 ...
@@ -56,4 +71,6 @@ World Is Not Enough, The (1999)
 Blood Simple (1984)
 ```
 
-First user loves old movies. Indeed :)
+### For movie
+
+...
