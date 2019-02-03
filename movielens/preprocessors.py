@@ -1,7 +1,12 @@
+# built-in
 from functools import partial
-import numpy
 from typing import Optional
-from .datasets import RatingData, MovieData
+
+# external
+import numpy
+
+# app
+from .datasets import MovieData, RatingData
 
 
 def _get_index(field, vector, source_id) -> Optional[int]:

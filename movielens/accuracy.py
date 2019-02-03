@@ -1,6 +1,11 @@
+# built-in
 from typing import List
-from .prediction import Prediction
+
+# external
 import numpy
+
+# app
+from .prediction import Prediction
 
 
 def rmse(predictions: List[Prediction]) -> float:

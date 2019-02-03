@@ -1,4 +1,7 @@
+# built-in
 from math import isclose
+
+# project
 from movielens.slope_one import build_slope_one
 
 

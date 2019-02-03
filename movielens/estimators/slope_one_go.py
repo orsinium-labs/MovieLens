@@ -1,5 +1,8 @@
+# external
 import numpy
-from ..datasets import RatingData, MovieData
+
+# app
+from ..datasets import MovieData, RatingData
 from ..slope_one import build_slope_one
 from .base import BaseEstimator
 

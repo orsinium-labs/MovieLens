@@ -1,4 +1,5 @@
-from movielens import recommend, estimators, selectors, RatingData, MovieData, preprocess
+# project
+from movielens import MovieData, RatingData, estimators, preprocess, recommend, selectors
 
 
 def test_by_user():

@@ -1,4 +1,5 @@
-from ..datasets import RatingData, MovieData
+# app
+from ..datasets import MovieData, RatingData
 from .base import BaseEstimator
 
 

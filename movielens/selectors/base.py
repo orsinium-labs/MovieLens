@@ -1,6 +1,9 @@
+# built-in
 import abc
 from typing import List
-from ..datasets import RatingData, MovieData
+
+# app
+from ..datasets import MovieData, RatingData
 
 
 class BaseSelector(abc.ABC):

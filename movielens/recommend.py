@@ -1,7 +1,10 @@
+# built-in
+from collections import Counter
+from typing import List, Optional
+
+# app
 from .estimators.base import BaseEstimator
 from .selectors.base import BaseSelector
-from typing import List, Optional
-from collections import Counter
 
 
 def by_user(*, user: int, estimator: BaseEstimator, movies: List[int],

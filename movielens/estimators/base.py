@@ -1,5 +1,8 @@
+# built-in
 import abc
-from ..datasets import RatingData, MovieData
+
+# app
+from ..datasets import MovieData, RatingData
 
 
 class BaseEstimator(abc.ABC):

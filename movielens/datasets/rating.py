@@ -1,6 +1,10 @@
-from typing import Optional, Iterable
+# built-in
+from typing import Iterable, Optional
+
+# external
 import numpy
 
+# app
 from .base import BaseData
 
 

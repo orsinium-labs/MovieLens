@@ -1,5 +1,8 @@
-from movielens.datasets import MovieData
+# external
 import numpy
+
+# project
+from movielens.datasets import MovieData
 
 
 def test_movies():

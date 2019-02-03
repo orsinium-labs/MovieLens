@@ -1,6 +1,9 @@
+# external
 import numpy
 from tqdm import tqdm
-from ..datasets import RatingData, MovieData
+
+# app
+from ..datasets import MovieData, RatingData
 from .base import BaseEstimator
 
 

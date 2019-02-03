@@ -1,11 +1,14 @@
+# built-in
+import re
 from pathlib import Path
+from shutil import rmtree
+from typing import Optional, Tuple
+from zipfile import ZipFile
+
+# external
+import pandas
 import requests
 from tqdm import tqdm_notebook
-from zipfile import ZipFile
-from typing import Optional, Tuple
-import pandas
-import re
-from shutil import rmtree
 
 
 REX_YEAR = re.compile(r'.+\((\d+)\)')

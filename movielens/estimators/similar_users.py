@@ -1,8 +1,13 @@
-import numpy
-from tqdm import tqdm
-from ..datasets import RatingData, MovieData
+# built-in
 from collections import Counter
 from math import isclose
+
+# external
+import numpy
+from tqdm import tqdm
+
+# app
+from ..datasets import MovieData, RatingData
 from .base import BaseEstimator
 
 

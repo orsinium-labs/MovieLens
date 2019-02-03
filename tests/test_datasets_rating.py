@@ -1,5 +1,8 @@
-from movielens.datasets import RatingData
+# external
 import numpy
+
+# project
+from movielens.datasets import RatingData
 
 
 def test_users():

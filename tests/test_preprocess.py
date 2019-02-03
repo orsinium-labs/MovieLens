@@ -1,4 +1,5 @@
-from movielens import preprocess, RatingData, MovieData
+# project
+from movielens import MovieData, RatingData, preprocess
 
 
 def test_users():

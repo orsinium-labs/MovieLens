@@ -1,5 +1,9 @@
+# built-in
 from time import time
-from movielens import mae, rmse, RatingData, MovieData, preprocess, Prediction, estimators
+
+# project
+from movielens import MovieData, Prediction, RatingData, estimators, mae, preprocess, rmse
+
 
 ESTIMATORS = (
     # estimators.SlopeOneEstimator(),

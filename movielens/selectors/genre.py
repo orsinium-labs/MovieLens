@@ -1,9 +1,14 @@
-from .base import BaseSelector
+# built-in
+from collections import Counter
 from typing import List
+
+# external
 import numpy
 from tqdm import tqdm
-from ..datasets import RatingData, MovieData
-from collections import Counter
+
+# app
+from ..datasets import MovieData, RatingData
+from .base import BaseSelector
 
 
 class GenreSelector(BaseSelector):

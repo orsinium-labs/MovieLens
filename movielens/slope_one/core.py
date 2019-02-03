@@ -1,8 +1,11 @@
-from logging import getLogger
-from pathlib import Path
+# built-in
 import ctypes
+from logging import getLogger
 from math import sqrt
+from pathlib import Path
 from typing import List
+
+# external
 import numpy
 
 
