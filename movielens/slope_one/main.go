@@ -2,59 +2,42 @@ package main
 
 import "C"
 import (
-	"fmt"
 	"unsafe"
 
-	"github.com/kniren/gota/dataframe"
-	"github.com/kniren/gota/series"
 	"gonum.org/v1/gonum/mat"
 )
 
 // BuildSlopeOne builds deviation matrix for Slope One collaborative filtering algorithm
 //export BuildSlopeOne
-func BuildSlopeOne(users []int32, movies []int32, ratings []int32) (C.size_t, *C.float) {
-	userSet := make(map[int32]bool)
+func BuildSlopeOne(users []int, movies []int, ratings []int) (C.size_t, *C.float) {
+	userSet := make(map[int]bool)
 	for _, user := range users {
 		userSet[user] = true
 	}
 
-	movieSet := make(map[int32]bool)
+	var moviesCount int
 	for _, movie := range movies {
-		movieSet[movie] = true
+		if movie > moviesCount {
+			moviesCount = movie
+		}
 	}
-	moviesCount := len(movieSet)
-
-	df := dataframe.New(
-		series.New(users, series.Int, "user"),
-		series.New(movies, series.Int, "movie"),
-		series.New(ratings, series.Int, "rating"),
-	)
+	moviesCount++
 
 	diffMatrix := mat.NewDense(moviesCount, moviesCount, nil)
 	freqMatrix := mat.NewDense(moviesCount, moviesCount, nil)
 	diffMatrix.Zero()
 	freqMatrix.Zero()
-	for user := range userSet {
-		fil := df.Filter(dataframe.F{
-			Colname:    "user",
-			Comparator: series.Eq,
-			Comparando: user,
-		})
-		filMovies, _ := fil.Col("movie").Int()
-		filRatings, _ := fil.Col("rating").Int()
 
-		for i, movie1 := range filMovies {
-			rating1 := filRatings[i]
-			for j, movie2 := range filMovies {
-				if movie1 != movie2 {
-					rating2 := filRatings[j]
-					// add ratings diff into the diff matrix
-					value := diffMatrix.At(movie1, movie2)
-					diffMatrix.Set(movie1, movie2, value+float64(rating1-rating2))
-					// increment frequency
-					value = freqMatrix.At(movie1, movie2)
-					freqMatrix.Set(movie1, movie2, value+1)
-				}
+	recordsCount := len(users)
+	for i := 0; i < recordsCount; i++ {
+		for j := 0; j < recordsCount; j++ {
+			if users[i] == users[j] {
+				// add ratings diff into the diff matrix
+				value := diffMatrix.At(movies[i], movies[j])
+				diffMatrix.Set(movies[i], movies[j], value+float64(ratings[i]-ratings[j]))
+				// increment frequency
+				value = freqMatrix.At(movies[i], movies[j])
+				freqMatrix.Set(movies[i], movies[j], value+1)
 			}
 		}
 	}
@@ -86,7 +69,6 @@ func BuildSlopeOne(users []int32, movies []int32, ratings []int32) (C.size_t, *C
 	for i, value := range vector {
 		cVector[i] = C.float(value)
 	}
-	fmt.Println("done!")
 
 	return C.size_t(size), (*C.float)(p)
 }

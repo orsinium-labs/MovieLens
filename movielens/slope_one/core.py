@@ -1,8 +1,12 @@
+from logging import getLogger
 from pathlib import Path
 import ctypes
 from math import sqrt
 from typing import List
 import numpy
+
+
+logger = getLogger(__name__)
 
 
 class GoSliceOutput(ctypes.Structure):
@@ -33,13 +37,18 @@ lib.BuildSlopeOne.restype = GoSliceOutput
 
 def build_slope_one(users: List[int], movies: List[int], ratings: List[int]) -> numpy.ndarray:
     size = len(users)
+    logger.debug('start go call')
     result = lib.BuildSlopeOne(
         make_input(users, size),
         make_input(movies, size),
         make_input(ratings, size),
     )
+    logger.debug('end go call')
     width = int(sqrt(result.len))
-    array = numpy.array(result.data[:result.len])
+    array = numpy.zeros(result.len)
+    for i in range(result.len):
+        array[i] = result.data[i]
+    logger.debug('numpy array is ready')
     return array.reshape((width, width))
 
 
