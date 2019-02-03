@@ -6,8 +6,10 @@ ratings_type = ctypes.c_int32 * 3
 
 
 class GoSlice(ctypes.Structure):
-    _fields_ = [("data", ctypes.POINTER(ctypes.c_void_p)),
-                ("len", ctypes.c_longlong), ("cap", ctypes.c_longlong)]
+    _fields_ = [
+        ("data", ctypes.POINTER(ctypes.c_float)),
+        ("len", ctypes.c_size_t),
+    ]
 
 
 lib = ctypes.cdll.LoadLibrary("./main.so")

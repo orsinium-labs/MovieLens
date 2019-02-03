@@ -65,7 +65,13 @@ extern "C" {
 #endif
 
 
-extern GoSlice BuildSlopeOne(GoSlice p0, GoSlice p1, GoSlice p2);
+/* Return type for BuildSlopeOne */
+struct BuildSlopeOne_return {
+	size_t r0;
+	float* r1;
+};
+
+extern struct BuildSlopeOne_return BuildSlopeOne(GoSlice p0, GoSlice p1, GoSlice p2);
 
 #ifdef __cplusplus
 }
