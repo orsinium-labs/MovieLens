@@ -1,3 +1,4 @@
+from pathlib import Path
 import ctypes
 from math import sqrt
 from typing import List
@@ -17,7 +18,8 @@ class GoSlice(ctypes.Structure):
     ]
 
 
-lib = ctypes.cdll.LoadLibrary("./main.so")
+path = Path(__file__).resolve().parent
+lib = ctypes.cdll.LoadLibrary(str(path / 'main.so'))
 lib.BuildSlopeOne.argtypes = [users_type, movies_type, ratings_type]
 lib.BuildSlopeOne.restype = GoSlice
 

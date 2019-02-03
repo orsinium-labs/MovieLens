@@ -4,6 +4,7 @@ ESTIMATORS = (
     estimators.GlobalMeanEstimator(),
     estimators.GroupMeanEstimator(),
     # estimators.SlopeOneEstimator(),
+    estimators.SlopeOneGoEstimator(),
 )
 
 

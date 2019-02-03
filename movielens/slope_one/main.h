@@ -71,6 +71,8 @@ struct BuildSlopeOne_return {
 	float* r1;
 };
 
+// BuildSlopeOne builds deviation matrix for Slope One collaborative filtering algorithm
+
 extern struct BuildSlopeOne_return BuildSlopeOne(GoSlice p0, GoSlice p1, GoSlice p2);
 
 #ifdef __cplusplus
