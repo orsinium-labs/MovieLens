@@ -2,10 +2,11 @@ from time import time
 from movielens import mae, rmse, RatingData, MovieData, preprocess, Prediction, estimators
 
 ESTIMATORS = (
+    # estimators.SlopeOneEstimator(),
     estimators.GlobalMeanEstimator(),
     estimators.GroupMeanEstimator(),
-    # estimators.SlopeOneEstimator(),
     estimators.SlopeOneGoEstimator(),
+    estimators.SimilarUsersEstimator(),
 )
 
 

@@ -19,6 +19,10 @@ class RatingData(BaseData):
         filtered = self.df[self.df['userId'] == user]
         return filtered['movieId']
 
+    def get_users(self, movie: int) -> Iterable[int]:
+        filtered = self.df[self.df['movieId'] == movie]
+        return filtered['userId']
+
     def get_ratings(self, user: int) -> Iterable[int]:
         filtered = self.df[self.df['userId'] == user]
         return filtered['rating']
