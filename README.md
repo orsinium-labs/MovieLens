@@ -73,4 +73,45 @@ Blood Simple (1984)
 
 ### For movie
 
+Get datasets:
+
+```python
+>>> from movielens import recommend, selectors, RatingData, MovieData, preprocess
+>>> ratings = RatingData()
+>>> movies = MovieData()
+>>> preprocess(ratings=ratings, movies=movies)
+>>> train, test = ratings.split(elements=100)
+```
+
+Train estimator:
+
+```python
+>>> selector = selectors.GenreSelector()
+>>> selector.fit(ratings=train, movies=movies)
+```
+
+Get recommendations:
+
+```python
+>>> recs = recommend.by_movie(
+...     movie=0,  # Toy Story
+...     selector=selector,
+...     movies=ratings.movies,
+...     count=6,
+... )
+>>> recs
+[7742, 7338, 7787, 7899, 8656, 8689]
+```
+
+Get movies titles:
+
+```python
+>>> for rec in recs:
+...     print(movies.get_title(rec))
 ...
+Immortals (2011)
+Blue Valentine (2010)
+Iron Lady, The (2011)
+Madagascar 3: Europe's Most Wanted (2012)
+Patton Oswalt: My Weakness Is Strong (2009)
+Ant-Man (2015)

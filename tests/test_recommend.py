@@ -27,7 +27,7 @@ def test_by_movie():
     preprocess(ratings=ratings, movies=movies)
     train, test = ratings.split(elements=100)
 
-    selector = selectors.SimilarSelector()
+    selector = selectors.GenreSelector()
     selector.fit(ratings=train, movies=movies)
 
     recs = recommend.by_movie(

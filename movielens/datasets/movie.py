@@ -1,6 +1,5 @@
 from typing import Optional, List
 import pandas
-import numpy
 import re
 
 from .base import BaseData
@@ -58,7 +57,10 @@ class MovieData(BaseData):
         result = []
         for index, row in self.df.iterrows():
             if genre_name in row.genres.split('|'):
-                result.append(index)
+                if 'movieId' in self.df.columns:
+                    result.append(int(row['movieId']))
+                else:
+                    result.append(int(index))
         return result
 
     def get_genres_df(self) -> pandas.DataFrame:
