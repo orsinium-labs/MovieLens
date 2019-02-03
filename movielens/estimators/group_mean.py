@@ -12,15 +12,15 @@ class GroupMeanEstimator:
     """
 
     def fit(self, ratings: RatingData, movies: MovieData) -> None:
-        self._means = numpy.zeros(len(movies.movies))
+        self._mean = ratings.df.rating.mean()
+
+        self._means = numpy.array([self._mean for _ in movies.movies])
         for _params, group in tqdm(movies.df.groupby(['genres', 'year'])):
             filtered_ratings = ratings.df[ratings.df['movieId'].isin(group['movieId'])]
             mean = filtered_ratings['rating'].mean()
-            for movie in group['movieId']:
-                self._means[int(movie)] = mean
+            if not numpy.isnan(mean):
+                for movie in group['movieId']:
+                    self._means[int(movie)] = mean
 
     def estimate(self, user: int, movie: int) -> float:
-        estimated = self._means[movie]
-        if estimated == 0:
-            return numpy.mean(self._means)
-        return estimated
+        return self._means[movie]

@@ -5,6 +5,10 @@ from ..datasets import RatingData, MovieData
 
 class SlopeOneEstimator:
     """
+    This realisation hasn't been tested because this is too slow.
+    Instead of this I've made realisation on Go.
+    It takes 40 seconds against 3 hours.
+
     https://en.wikipedia.org/wiki/Slope_One
     https://arxiv.org/pdf/cs/0702144.pdf
     https://github.com/NicolasHug/Surprise/blob/master/surprise/prediction_algorithms/slope_one.pyx
