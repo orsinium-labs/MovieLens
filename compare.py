@@ -9,8 +9,9 @@ ESTIMATORS = (
     # estimators.SlopeOneEstimator(),
     estimators.GlobalMeanEstimator(),
     estimators.GroupMeanEstimator(),
-    estimators.SlopeOneGoEstimator(),
+    estimators.MovieMeanEstimator(),
     estimators.SimilarUsersEstimator(),
+    estimators.SlopeOneGoEstimator(),
 )
 
 
