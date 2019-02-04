@@ -7,14 +7,32 @@
 1. [movielens/estimators](./movielens/estimators) -- realization of rating estimators on Python.
 1. [movielens/slope_one](./movielens/slope_one) -- realization of Slope One estimator on Go.
 
+## Estimators
+
+Estimators predict rating for given user and movie. In other words it is predicted rating that given user can give to given movie.
+
+1. **GlobalMeanEstimator** -- returns global mean rating by all movies. This is most dummy estimation. Every another smart estimator must be better.
+1. **GroupMeanEstimator** -- returns mean rating for this genre and year. It's user independent estimation and can be used when we know nothing about user.
+1. **MovieMeanEstimator** -- return mean rating for given movie. Also user independent estimation.
+1. **SimilarUsersEstimator** -- estimate movie rating by weighted mean among similar users where weight is similarity of two users.
+1. **SlopeOneGoEstimator** -- Go implementation of [Slope One](https://en.wikipedia.org/wiki/Slope_One) algortihm. I've made fit of this model on Go because Python implementation (**SlopeOneEstimator**) is much slower (2 hours against 20 seconds).
+
+## Selectors
+
+Selectors selects n most similar movies for given movie.
+
+1. **GenreSelector** -- returns best movies in genres of given movie. Also position in rating depends on count of common genres.
+1. **SimilarSelector** -- returns movies sorted by rating multiplied on genres and years similarity of movies to given movie.
+
 ## Results
 
 ```
 name                       rmse  mae   fit     predict
-GlobalMeanEstimator        2.31  1.86   0.00s  0.01s
-GroupMeanEstimator         2.15  1.69  13.54s  0.01s
-SlopeOneGoEstimator        1.71  1.30  43.88s  0.18s
-SimilarUsersEstimator      2.08  1.61  84.18s  0.70s
+GlobalMeanEstimator        1.95  1.54  00.00s  0.01s
+SimilarUsersEstimator      1.85  1.44  40.08s  0.34s
+MovieMeanEstimator         1.84  1.41  04.58s  0.01s
+GroupMeanEstimator         1.74  1.34  06.48s  0.01s
+SlopeOneGoEstimator        1.54  1.21  22.61s  0.09s
 ```
 
 ## Run estimators comparing

@@ -5,6 +5,4 @@ plotnine
 plydata
 pytest
 requests
-scikit-learn
-scikit-surprise
 tqdm
