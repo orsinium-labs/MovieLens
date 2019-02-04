@@ -24,6 +24,17 @@ Selectors selects n most similar movies for given movie.
 1. **GenreSelector** -- returns best movies in genres of given movie. Also position in rating depends on count of common genres.
 1. **SimilarSelector** -- returns movies sorted by rating multiplied on genres and years similarity of movies to given movie.
 
+## Ideas to improve
+
+1. [SVD](https://en.wikipedia.org/wiki/Singular_value_decomposition) really works great in recommendation systems. [Netflix Prize](https://en.wikipedia.org/wiki/Netflix_Prize) winners BellKor team [used SVD++](https://www.netflixprize.com/assets/GrandPrize2009_BPC_BellKor.pdf) as the main algorithm of their solution. However, full solution composed from 27 (!!!) algorithms.
+1. Grid Search on Cross Validation to get best params for SVD.
+1. Write everything on Go. I really like Python, but learning time of this models makes me sad.
+1. kNN also can work quite good.
+1. Make Selector based on Slope One
+1. Make Selector that can work on any Estimator. For this we can get users that like given movie and build mean recommendation for them.
+1. VotingClassifier to use combination of Estimators as one. All modern recommendation systems build on combinations of algorithms.
+1. Use [Evaluation](https://en.wikipedia.org/wiki/Evaluation) to use combination of Selectors as one.
+
 ## Results
 
 ```
